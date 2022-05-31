@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="text" id="companyname" name="companyname" />
+    <input type="text" id="country" name="country" />
+    <input type="file" id="file" name="file" multiple />
+    <input type="button" id="btnsubmit" onclick="SubmitButtonOnclick()" value="submit" />
+}
+
+<script type="text/javascript">
+    function SubmitButtonOnclick() {
+        var formData = new FormData();
+        var files = $("#file").get(0).files;
+
+        formData.append("companyname", $("#companyname").val().trim());
+        formData.append("country", $("#country").val().trim());
+        for (var i = 0; i < files.length; i++) {
+            formData.append("file", files[i]);
+        }   
+        debugger
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Index","Home")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                alert("Sucessfull");
+            },
+            error: function (error) {
+                alert("error");
+            }
+        });
+        debugger
+    }
+</script>
